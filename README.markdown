@@ -8,7 +8,7 @@
 - Confirms UEFI firmware and DirectX 12/WDDM 2.0 graphics compatibility.
 - Advises on Microsoft Account requirements (optional in some cases).
 - Outputs a color-coded console report with detailed explanations.
-- Optionally exports results to a CSV file for logging or sharing.
+- Optionally exports results to CSV, XML, or JSON files, or generates an HTML report.
 - Non-invasive, read-only checks with no system modifications.
 
 ## Requirements
@@ -16,7 +16,7 @@
 - **PowerShell Version**: 5.1 or later (PowerShell 7.x recommended).
 - **Operating System**: Windows 10 (version 2004+) or Windows 11, x64 architecture.
 - **Modules**: None; uses built-in cmdlets (`Get-CimInstance`, `Get-WmiObject`, `dism`, `Get-ComputerInfo`).
-- **Permissions**: Standard user for most checks; Administrator for full TPM/Secure Boot access.
+- **Permissions**: Standard user for most checks; Administrator for full TPM/Secure Boot access unless `-NoElevation` is used.
 - **Dependencies**: .NET Framework 4.8 or later (included in supported Windows versions).
 
 ## Installation
@@ -46,24 +46,56 @@
    ```
    - Shows a formatted report with ✅ Pass, ❌ Fail, or ⚠️ Warning for each requirement.
 
-2. **Export to CSV**:
-   Save results to a CSV file:
+2. **Export to JSON**:
+   Save results to a JSON file for analysis:
    ```powershell
-   .\Test-Win11Compatibility.ps1 -ExportPath "C:\Reports\Win11Report.csv"
+   .\Test-Win11Compatibility.ps1 -ExportResults -ExportFormat JSON -ExportPath "C:\Reports\Win11Report.json"
    ```
-   - Generates a file with requirement details and recommendations.
+   - Generates a JSON file with requirement details and recommendations.
+
+3. **Generate HTML Report**:
+   Create an HTML report for sharing:
+   ```powershell
+   .\Test-Win11Compatibility.ps1 -ExportHTML -ExportPath "C:\Reports\Win11Report.html"
+   ```
 
 ## Parameters
 
-- **`-ExportPath`** (Optional, String):
-  - Description: Path to save results as a CSV file. Appends timestamp if unspecified (e.g., `Win11Report_2025-10-20.csv`).
-  - Example: `-ExportPath "C:\Logs\report.csv"`
-  - Default: None (console output only).
+- **`-DriveLetter`** (Optional, String):
+  - Description: Specifies the drive letter to check for storage requirements (e.g., available disk space). Must be a single uppercase letter (A-Z).
+  - Expected Type: System.String (e.g., `"C"`).
+  - Default: `"C"`.
+  - Example: `-DriveLetter D`.
 
-- **`-Quiet`** (Optional, Switch):
-  - Description: Suppresses detailed console output, showing only a summary.
-  - Example: `-Quiet -ExportPath "C:\silent_report.csv"`
-  - Default: False (full output).
+- **`-ExportResults`** (Optional, Switch):
+  - Description: Enables exporting the compatibility results to a file in the format specified by `-ExportFormat`.
+  - Expected Type: SwitchParameter (no value needed).
+  - Default: False (no export).
+  - Example: `-ExportResults`.
+
+- **`-ExportFormat`** (Optional, String):
+  - Description: Specifies the file format for exported results when `-ExportResults` is used. Valid options are `XML`, `JSON`, or `CSV`.
+  - Expected Type: System.String (must be `"XML"`, `"JSON"`, or `"CSV"`).
+  - Default: `"XML"`.
+  - Example: `-ExportFormat CSV`.
+
+- **`-ExportPath`** (Optional, String):
+  - Description: Specifies the file path or directory to save the exported results. If a directory is provided, the script generates a filename with a timestamp (e.g., `Win11Report_2025-10-20.xml`). If a file path is provided, it uses the specified filename.
+  - Expected Type: System.String (e.g., `"C:\Reports\Win11Report.csv"` or `"C:\Reports\"`).
+  - Default: `".\"` (current directory).
+  - Example: `-ExportPath "C:\Reports\report.json"`.
+
+- **`-ExportHTML`** (Optional, Switch):
+  - Description: Generates an HTML report of the compatibility results, saved to the path specified by `-ExportPath`. Overrides `-ExportFormat` if both are specified.
+  - Expected Type: SwitchParameter (no value needed).
+  - Default: False (no HTML export).
+  - Example: `-ExportHTML`.
+
+- **`-NoElevation`** (Optional, Switch):
+  - Description: Runs the script without requiring administrative privileges. Some checks (e.g., TPM, Secure Boot) may be limited or skipped if elevation is not available.
+  - Expected Type: SwitchParameter (no value needed).
+  - Default: False (attempts elevated checks).
+  - Example: `-NoElevation`.
 
 ## Output
 
@@ -71,7 +103,7 @@
   - Requirement headers (e.g., "CPU Check", "TPM Check").
   - Status indicators and details (e.g., "TPM: 2.0 - Compatible").
   - Summary (e.g., "7/8 Requirements Met").
-- **CSV** (with `-ExportPath`): Columns include Requirement, Status, Details, Recommendation.
+- **File Export** (with `-ExportResults` or `-ExportHTML`): Results in CSV, XML, JSON, or HTML format, with columns/fields for Requirement, Status, Details, and Recommendation.
 - **Exit Code**: 0 (fully compatible), 1 (issues detected).
 
 No system changes are made.
@@ -79,7 +111,7 @@ No system changes are made.
 ## Error Handling and Known Issues
 
 - **Errors**:
-  - **Permission Denied (TPM/Secure Boot)**: Run as Administrator:
+  - **Permission Denied (TPM/Secure Boot)**: Run as Administrator or use `-NoElevation`:
     ```powershell
     Start-Process powershell -Verb RunAs -ArgumentList "-File .\Test-Win11Compatibility.ps1"
     ```
