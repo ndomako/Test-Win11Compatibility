@@ -129,7 +129,7 @@ function Add-AuditError {
         Timestamp = Get-Date -Format 'o'
         Severity  = $Severity
         Message   = $Message
-        Context   = $Context ?? 'General'
+        Context   = if ( $null -ne $Context ) { $Context } else { 'General' }
     }
     
     $script:AuditState.Errors += $errorObj
@@ -1332,4 +1332,5 @@ finally {
 }
 
 Write-Host "`nPress any key to exit..." -ForegroundColor Gray
+
 $null = Read-Host "Press Enter to exit"
