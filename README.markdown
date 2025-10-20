@@ -1,6 +1,6 @@
 # Test-Win11Compatibility
 
-**Test-Win11Compatibility** is a PowerShell script that evaluates a Windows system's readiness for Windows 11. It checks hardware (CPU, RAM, storage), firmware (TPM 2.0, Secure Boot), and software requirements, providing a detailed report with pass/fail indicators and remediation advice. Ideal for IT administrators and users planning a Windows 11 upgrade, this script is part of the [Check-Win11Readiness](https://github.com/ndomako/Check-Win11Readiness) repository.
+**Test-Win11Compatibility** is a PowerShell script that evaluates a Windows system's readiness for Windows 11. It checks hardware (CPU, RAM, storage), firmware (TPM 2.0, Secure Boot), and software requirements, providing a detailed report with pass/fail indicators and remediation advice. Ideal for IT administrators and users planning a Windows 11 upgrade, this script is part of the [Test-Win11Compatibility](https://github.com/ndomako/Test-Win11Compatibility) repository.
 
 ## Features
 
@@ -23,12 +23,12 @@
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/ndomako/Check-Win11Readiness.git
-   cd Check-Win11Readiness
+   git clone https://github.com/ndomako/Test-Win11Compatibility.git
+   cd Test-Win11Compatibility
    ```
 
 2. **Download the Script**:
-   - Visit [Test-Win11Compatibility.ps1](https://github.com/ndomako/Check-Win11Readiness/blob/main/Test-Win11Compatibility.ps1).
+   - Visit [Test-Win11Compatibility.ps1](https://github.com/ndomako/Test-Win11Compatibility/blob/main/Test-Win11Compatibility.ps1).
    - Click "Raw" and save as `Test-Win11Compatibility.ps1` (e.g., to `C:\Scripts\`).
 
 3. **Set Execution Policy** (if needed):
@@ -98,7 +98,7 @@ No system changes are made.
   1. Check execution policy: `Get-ExecutionPolicy`.
   2. Test cmdlets: `Get-Tpm`, `Get-CimInstance Win32_OperatingSystem`.
   3. Review Event Logs (Event Viewer > Windows Logs > System).
-  4. Report issues at [GitHub Issues](https://github.com/ndomako/Check-Win11Readiness/issues).
+  4. Report issues at [GitHub Issues](https://github.com/ndomako/Test-Win11Compatibility/issues).
 
 ## Contributing
 
@@ -109,7 +109,7 @@ Contributions are welcome! To contribute:
 4. Push to the branch (`git push origin feature/new-check`).
 5. Open a pull request.
 
-See [CONTRIBUTING.md](https://github.com/ndomako/Check-Win11Readiness/blob/main/CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](https://github.com/ndomako/Test-Win11Compatibility/blob/main/CONTRIBUTING.md) for details.
 
 ## License
 
@@ -127,7 +127,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - **Ndomako** ([GitHub](https://github.com/ndomako)) - Creator and maintainer.
 
-For questions or feedback, open a discussion at [GitHub Discussions](https://github.com/ndomako/Check-Win11Readiness/discussions).
+For questions or feedback, open a discussion at [GitHub Discussions](https://github.com/ndomako/Test-Win11Compatibility/discussions).
 
 ---
 
